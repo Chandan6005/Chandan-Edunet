@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CSS Transition Example</title>
+  <style>
+    body { text-align: center; font-family: Arial; }
+    .box {
+      width: 150px;
+      height: 150px;
+      margin: 50px auto;
+      background: blue;
+      border: 2px solid black;
+      transition: all 2s;
+    }
+    .box:hover {
+      width: 200px;
+      height: 200px;
+      background: red;
+    }
+  </style>
+</head>
+<body>
+  <h2>Basic CSS Transition</h2>
+  <div class="box"></div>
+  <p>Hover the box to see it grow in size and change color <i><b>smoothly</b></i> over 2 seconds.</p>
+</body>
+</html>

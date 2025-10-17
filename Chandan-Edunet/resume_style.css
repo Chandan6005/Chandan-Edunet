@@ -1,0 +1,31 @@
+ #imagesec
+        {
+            display:inline-block;
+            width:20%;
+            background-color:lightblue;
+            text-align:center;
+            font-size:24px;
+            font-weight:bold;
+            
+        }   
+        #biosec
+        {
+            display:inline-block;
+            width:76%;
+         
+            vertical-align:top;
+        }
+        .abc
+        {
+            border: 2px solid black;
+            
+        }
+        
+        #bioheader,#bioabout
+        {
+            background-color:lightgreen;
+            font-size:24px;
+            text-align: center;
+            font-weight:bold;
+            padding:10px;
+        }

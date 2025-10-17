@@ -1,0 +1,17 @@
+header {
+    background-color: whitesmoke;
+    padding: 10px;
+    text-align: center;
+}
+main {
+    padding: 20px;
+    text-align: center;
+}
+footer {
+    background-color: greenyellow;
+    padding: 10px;
+    text-align: center;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
