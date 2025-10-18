@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Dynamic Calculator - Chandan Edunet</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Space+Grotesk:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg1: #0f1724;
+        --bg2: #071124;
+        --card: rgba(255, 255, 255, 0.05);
+        --accent: #6ee7b7;
+        --accent-2: #60a5fa;
+        --glass: rgba(255, 255, 255, 0.06);
+        --muted: rgba(255, 255, 255, 0.6);
+        --danger: #ff7a7a;
+        --soft: rgba(255, 255, 255, 0.03);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial;
+        background: radial-gradient(
+            1200px 600px at 10% 10%,
+            rgba(96, 165, 250, 0.09),
+            transparent 8%
+          ),
+          radial-gradient(
+            1000px 500px at 90% 90%,
+            rgba(110, 231, 183, 0.06),
+            transparent 8%
+          ),
+          linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 100%);
+        color: #fff;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+      }
+
+      .calculator {
+        width: 380px;
+        max-width: 96%;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.02),
+          rgba(255, 255, 255, 0.01)
+        );
+        border-radius: 18px;
+        padding: 20px;
+        box-shadow: 0 10px 30px rgba(2, 6, 23, 0.6),
+          inset 0 1px 0 rgba(255, 255, 255, 0.02);
+        backdrop-filter: blur(8px) saturate(120%);
+        border: 1px solid rgba(255, 255, 255, 0.04);
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* top ribbon */
+      .ribbon {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 14px;
+      }
+      .brand {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+      .logo {
+        width: 44px;
+        height: 44px;
+        border-radius: 11px;
+        background: linear-gradient(135deg, var(--accent), var(--accent-2));
+        box-shadow: 0 4px 18px rgba(96, 165, 250, 0.18);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-family: "Space Grotesk", sans-serif;
+        color: #07203b;
+        font-size: 18px;
+      }
+      .title {
+        line-height: 1;
+      }
+      .title .name {
+        font-weight: 700;
+        font-size: 15px;
+      }
+      .title .sub {
+        font-size: 11px;
+        color: var(--muted);
+        letter-spacing: 0.2px;
+      }
+
+      .controls {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      .theme-btn {
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.04);
+        padding: 8px 10px;
+        border-radius: 10px;
+        color: var(--muted);
+        font-size: 13px;
+        cursor: pointer;
+        display: inline-flex;
+        gap: 6px;
+        align-items: center;
+      }
+
+      /* display */
+      .screen {
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.02),
+          rgba(255, 255, 255, 0.01)
+        );
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 18px;
+        border: 1px solid rgba(255, 255, 255, 0.025);
+        min-height: 84px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 6px;
+        box-shadow: 0 6px 20px rgba(4, 10, 30, 0.5) inset;
+      }
+      .expr {
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.65);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        padding-right: 6px;
+      }
+      .result {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 28px;
+        font-weight: 600;
+        color: #fff;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+      }
+      .result .value {
+        font-feature-settings: "tnum";
+      }
+      .memory-indicator {
+        font-size: 12px;
+        color: var(--accent);
+        background: rgba(110, 231, 183, 0.08);
+        padding: 6px 8px;
+        border-radius: 8px;
+        border: 1px solid rgba(110, 231, 183, 0.06);
+      }
+
+      /* keypad */
+      .keys {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+      }
+      .btn {
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.01),
+          rgba(255, 255, 255, 0.008)
+        );
+        border-radius: 10px;
+        padding: 16px;
+        text-align: center;
+        cursor: pointer;
+        user-select: none;
+        font-weight: 600;
+        color: var(--muted);
+        border: 1px solid rgba(255, 255, 255, 0.03);
+        transition: transform 0.12s ease, box-shadow 0.12s ease,
+          background 0.12s;
+        position: relative;
+        overflow: hidden;
+      }
+      .btn:active {
+        transform: translateY(2px) scale(0.998);
+      }
+      .btn.operator {
+        background: linear-gradient(
+          180deg,
+          rgba(96, 165, 250, 0.14),
+          rgba(96, 165, 250, 0.06)
+        );
+        color: #071133;
+        font-weight: 700;
+        box-shadow: 0 6px 18px rgba(96, 165, 250, 0.06);
+        border: none;
+      }
+      .btn.equal {
+        grid-column: span 2;
+        background: linear-gradient(135deg, var(--accent), var(--accent-2));
+        color: #07203b;
+        font-size: 17px;
+        box-shadow: 0 10px 30px rgba(110, 231, 183, 0.12);
+        border: none;
+      }
+      .btn.accent {
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.01),
+          rgba(255, 255, 255, 0.008)
+        );
+        color: var(--danger);
+        border: 1px solid rgba(255, 255, 255, 0.02);
+      }
+
+      /* small helper styling */
+      .small {
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .kbd-hint {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.35);
+        margin-top: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .history {
+        position: absolute;
+        right: -220px;
+        top: 0;
+        width: 220px;
+        height: 100%;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.02),
+          rgba(255, 255, 255, 0.01)
+        );
+        border-left: 1px solid rgba(255, 255, 255, 0.02);
+        padding: 16px;
+        transition: right 0.28s cubic-bezier(0.2, 0.9, 0.3, 1);
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .history.open {
+        right: 0;
+      }
+      .history h4 {
+        margin: 0;
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .history-list {
+        overflow: auto;
+        padding-top: 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .hist-item {
+        font-size: 13px;
+        background: rgba(255, 255, 255, 0.02);
+        padding: 8px;
+        border-radius: 8px;
+        cursor: pointer;
+        color: var(--muted);
+        border: 1px solid rgba(255, 255, 255, 0.01);
+      }
+      .hist-item .h-exp {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.45);
+      }
+      .hist-item .h-res {
+        font-weight: 600;
+        color: #fff;
+        margin-top: 6px;
+      }
+
+      /* ripple */
+      .btn::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        width: 120%;
+        height: 120%;
+        background: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.07),
+          transparent 40%
+        );
+        transition: transform 0.45s cubic-bezier(0.2, 0.9, 0.3, 1),
+          opacity 0.35s;
+        opacity: 0;
+      }
+      .btn:focus::after,
+      .btn:active::after {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+      }
+
+      /* responsive */
+      @media (max-width: 420px) {
+        .calculator {
+          padding: 14px;
+          border-radius: 14px;
+        }
+        .logo {
+          width: 40px;
+          height: 40px;
+          font-size: 16px;
+          border-radius: 10px;
+        }
+        .screen {
+          min-height: 72px;
+          padding: 12px;
+        }
+        .result {
+          font-size: 22px;
+        }
+        .btn {
+          padding: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="calculator" role="application" aria-label="Calculator">
+      <div class="ribbon">
+        <div class="brand">
+          <div class="logo">ED</div>
+          <div class="title">
+            <div class="name">Chandan Edunet</div>
+            <div class="sub">Dynamic Calculator</div>
+          </div>
+        </div>
+        <div class="controls">
+          <button class="theme-btn" id="histToggle" title="Toggle history">
+            History
+          </button>
+          <button class="theme-btn" id="clearMemory" title="Clear memory">
+            MC
+          </button>
+        </div>
+      </div>
+
+      <div class="screen" aria-live="polite">
+        <div class="expr" id="expression" aria-label="Expression">0</div>
+        <div class="result">
+          <div class="value" id="result">0</div>
+          <div class="memory-indicator" id="memFlag" style="display: none">
+            M
+          </div>
+        </div>
+      </div>
+
+      <div class="keys" id="keys">
+        <div class="btn accent" data-action="clearAll">AC</div>
+        <div class="btn" data-action="back">⌫</div>
+        <div class="btn" data-action="percent">%</div>
+        <div class="btn operator" data-value="/">÷</div>
+
+        <div class="btn" data-value="7">7</div>
+        <div class="btn" data-value="8">8</div>
+        <div class="btn" data-value="9">9</div>
+        <div class="btn operator" data-value="*">×</div>
+
+        <div class="btn" data-value="4">4</div>
+        <div class="btn" data-value="5">5</div>
+        <div class="btn" data-value="6">6</div>
+        <div class="btn operator" data-value="-">−</div>
+
+        <div class="btn" data-value="1">1</div>
+        <div class="btn" data-value="2">2</div>
+        <div class="btn" data-value="3">3</div>
+        <div class="btn operator" data-value="+">+</div>
+
+        <div class="btn" data-action="memoryAdd">M+</div>
+        <div class="btn" data-value="0">0</div>
+        <div class="btn" data-value=".">.</div>
+        <div class="btn equal" data-action="equals">=</div>
+      </div>
+
+      <aside class="history" id="historyPanel" aria-hidden="true">
+        <h4>History</h4>
+        <div class="history-list" id="historyList"></div>
+        <div class="small" style="margin-top: auto; opacity: 0.6">
+          Tap an item to load expression
+        </div>
+      </aside>
+    </main>
+
+    <script>
+      // Simple, safe-ish evaluator and UI logic
+      const expressionEl = document.getElementById("expression");
+      const resultEl = document.getElementById("result");
+      const keys = document.getElementById("keys");
+      const histPanel = document.getElementById("historyPanel");
+      const histList = document.getElementById("historyList");
+      const histToggle = document.getElementById("histToggle");
+      const memFlag = document.getElementById("memFlag");
+      const clearMemoryBtn = document.getElementById("clearMemory");
+
+      let expression = "";
+      let memory = null;
+      let history = [];
+
+      function render() {
+        expressionEl.textContent = expression || "0";
+        const r = safeEvaluate(expression);
+        resultEl.textContent = r === null ? "0" : formatNumber(r);
+        memFlag.style.display = memory !== null ? "inline-block" : "none";
+        renderHistory();
+      }
+
+      function formatNumber(v) {
+        if (Number.isInteger(v)) return v.toString();
+        return parseFloat(v.toFixed(10)).toString();
+      }
+
+      // Replace some symbols and compute. Returns null on error
+      function safeEvaluate(expr) {
+        if (!expr) return null;
+        // Convert symbols to JS operators
+        const normalized = expr
+          .replace(/×/g, "*")
+          .replace(/÷/g, "/")
+          .replace(/−/g, "-");
+        // Reject bad characters: allow digits, operators, parentheses, decimal, spaces, %
+        if (!/^[0-9+\-*/().%\s]+$/.test(normalized)) return null;
+        // Handle percent: convert 'number%' to (number/100)
+        // Replace occurrences like "50%" -> "(50/100)"
+        const pctHandled = normalized.replace(/(\d+(\.\d+)?)%/g, "($1/100)");
+        try {
+          // eslint-disable-next-line no-new-func
+          const val = Function('"use strict"; return (' + pctHandled + ")")();
+          if (typeof val === "number" && isFinite(val)) return val;
+          return null;
+        } catch (e) {
+          return null;
+        }
+      }
+
+      function pushHistory(exp, res) {
+        history.unshift({ exp, res, time: Date.now() });
+        if (history.length > 20) history.pop();
+      }
+
+      function renderHistory() {
+        histList.innerHTML = "";
+        for (const item of history) {
+          const el = document.createElement("div");
+          el.className = "hist-item";
+          el.innerHTML =
+            '<div class="h-exp">' +
+            escapeHtml(item.exp) +
+            '</div><div class="h-res">' +
+            escapeHtml(item.res) +
+            "</div>";
+          el.addEventListener("click", () => {
+            expression = item.exp;
+            render();
+            closeHistory();
+          });
+          histList.appendChild(el);
+        }
+        histPanel.setAttribute(
+          "aria-hidden",
+          histPanel.classList.contains("open") ? "false" : "true"
+        );
+      }
+
+      function escapeHtml(s) {
+        return String(s)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;");
+      }
+
+      function appendValue(v) {
+        // prevent multiple leading zeros
+        if (expression === "0" && v === "0") return;
+        if (expression === "0" && /[0-9.]/.test(v)) expression = "";
+        expression += v;
+        render();
+      }
+
+      function backspace() {
+        expression = expression.slice(0, -1);
+        render();
+      }
+
+      function clearAll() {
+        expression = "";
+        render();
+      }
+
+      function applyPercent() {
+        // append % sign; evaluation will convert it
+        if (!expression) return;
+        expression += "%";
+        render();
+      }
+
+      function calculate() {
+        const r = safeEvaluate(expression);
+        if (r === null) {
+          shakeScreen();
+          return;
+        }
+        const prevExp = expression || "0";
+        const prevRes = formatNumber(r);
+        pushHistory(prevExp, prevRes);
+        expression = String(prevRes);
+        render();
+      }
+
+      function memoryAdd() {
+        const r = safeEvaluate(expression);
+        if (r === null) {
+          shakeScreen();
+          return;
+        }
+        if (memory === null) memory = 0;
+        memory += r;
+        render();
+      }
+
+      function clearMemory() {
+        memory = null;
+        render();
+      }
+
+      function shakeScreen() {
+        document
+          .querySelector(".screen")
+          .animate(
+            [
+              { transform: "translateX(0px)" },
+              { transform: "translateX(-6px)" },
+              { transform: "translateX(6px)" },
+              { transform: "translateX(0px)" },
+            ],
+            { duration: 320, iterations: 1 }
+          );
+      }
+
+      // Keyboard support
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === "=") {
+          e.preventDefault();
+          calculate();
+          return;
+        }
+        if (e.key === "Backspace") {
+          e.preventDefault();
+          backspace();
+          return;
+        }
+        if (e.key === "Escape") {
+          clearAll();
+          return;
+        }
+        if (e.key === "m" && (e.ctrlKey || e.metaKey)) {
+          memoryAdd();
+          return;
+        }
+        const allowed = "0123456789+-*/().%";
+        if (allowed.includes(e.key)) {
+          appendValue(e.key);
+        }
+      });
+
+      keys.addEventListener("click", (ev) => {
+        const btn = ev.target.closest(".btn");
+        if (!btn) return;
+        const v = btn.dataset.value;
+        const a = btn.dataset.action;
+        if (v !== undefined) {
+          appendValue(v);
+          return;
+        }
+        if (a) {
+          handleAction(a);
+        }
+      });
+
+      function handleAction(a) {
+        if (a === "clearAll") clearAll();
+        if (a === "back") backspace();
+        if (a === "percent") applyPercent();
+        if (a === "equals") calculate();
+        if (a === "memoryAdd") memoryAdd();
+      }
+
+      // history panel toggle
+      histToggle.addEventListener("click", () => {
+        if (histPanel.classList.contains("open")) closeHistory();
+        else openHistory();
+      });
+      function openHistory() {
+        histPanel.classList.add("open");
+        renderHistory();
+      }
+      function closeHistory() {
+        histPanel.classList.remove("open");
+      }
+
+      clearMemoryBtn.addEventListener("click", () => clearMemory());
+
+      // initial render
+      render();
+
+      // small visual flourish: show a sample
+      (function demo() {
+        expression = "12+7*3";
+        render();
+        setTimeout(() => {
+          calculate();
+        }, 700);
+      })();
+    </script>
+  </body>
+</html>

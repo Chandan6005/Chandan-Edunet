@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grade Calculator</title>
+    <script>
+      function calculateGrade() {
+        const marksInput = document.getElementById("marks");
+        const marks = parseFloat(marksInput.value);
+        if (isNaN(marks) || marks < 0 || marks > 100) {
+          alert("Please enter a valid number between 0 and 100.");
+          return;
+        }
+
+        let grade;
+        switch (true) {
+          case marks >= 90:
+            grade = "S";
+            break;
+          case marks >= 80:
+            grade = "A+";
+            break;
+          case marks >= 70:
+            grade = "A";
+            break;
+          case marks >= 60:
+            grade = "B+";
+            break;
+          case marks >= 50:
+            grade = "B";
+            break;
+          case marks >= 40:
+            grade = "C";
+            break;
+          default:
+            grade = "F";
+        }
+
+        alert(`Your grade is: ${grade}`);
+      }
+
+      window.onload = calculateGrade;
+    </script>
+  </head>
+  <body>
+    <input
+      type="number"
+      name="marks"
+      id="marks"
+      placeholder="Enter the marks 0 - 100"
+    />
+    <button onclick="calculateGrade()">Calculate Grade</button>
+  </body>
+</html>

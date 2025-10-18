@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smallest Number Finder</title>
+    <script>
+        let n1 = document.getElementById('num1').value;
+        let n2 = document.getElementById('num2').value;
+        let n3 = document.getElementById('num3').value;
+
+        function findSmallest() {
+            let smallest;
+            if (n1 <= n2 && n1 <= n3) {
+                smallest = n1;
+            } else if (n2 <= n1 && n2 <= n3) {
+                smallest = n2;
+            } else {
+                smallest = n3;
+            }
+            alert(`The smallest number is: ${smallest}`);
+        }
+    </script>
+</head>
+<body>
+    <input type="number" name="num1" id="num1" placeholder="Enter first number">
+    <input type="number" name="num2" id="num2" placeholder="Enter second number">
+    <input type="number" name="num3" id="num3" placeholder="Enter third number">
+    <button onclick="findSmallest()">Find Smallest</button>
+</body>
+</html>

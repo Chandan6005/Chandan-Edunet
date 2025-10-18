@@ -8,11 +8,36 @@
   <body>
     <pre>
         <h1>Sign In</h1>
-        <input type="text" placeholder="EMAIL ADDRESS" required /><br />
-        <input type="password" placeholder="PASSWORD" required /><br />
+        <input type="text" placeholder="Email Address" required /><br />
+        <input type="password" placeholder="Password" required /><br />
+        <input type="tel" name="" id="phone" placeholder="Enter the Phone Number" oninput="validatePhone()">
+
         <input type="checkbox" /> Remember Me<br />
-        <button type="submit">Sign In</button>
+        <button type="submit">Sign In</button><br>
         Not Yet Registered? <a href="register.html">Sign Up</a>
     </pre>
   </body>
+  <script>
+    function validatePhone() {
+      const phoneInput = document.getElementById("phone");
+      const phoneNumber = phoneInput.value;
+      const phonePattern = /^[6-9]{1}[0-9]{9}$/;
+
+      // if (!phonePattern.test(phoneNumber)) {
+      //   alert("Invalid phone number. Please enter a valid 10-digit phone number starting with 6-9.");
+      //   phoneInput.focus();
+      //   return false;
+      // }
+      
+      if (phonePattern.test(phoneNumber)) {
+        phoneInput.style.borderColor = "green";
+      } else {
+        phoneInput.style.borderColor = "red";
+      }
+    }
+
+    function validateName() {
+      const nameInput = document.getElementById("name");
+    }
+  </script>
 </html>

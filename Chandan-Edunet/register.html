@@ -9,15 +9,59 @@
     <pre>
     <h1>Sign Up</h1>
     <form action="login.html">
-    <input type="text" placeholder="First Name" required />  <input type="text" placeholder="Last Name" required /><br />
+    <input type="text" placeholder="First Name" id="fname" required oninput="validateFName()" /> 
+    <input type="text" placeholder="Last Name" id="lname" required oninput="validateLName()"/><br />
     <input type="email" placeholder="Email" required /><br />
     <input type="email" placeholder="Confirm Email" required /><br />
     <input type="password" placeholder="Password" required /><br />
     <input type="password" placeholder="Confirm Password" required /><br />
+    <input type="tel" id="phone" placeholder="Enter Phone Number" oninput="validatePhone()"><br>
     <input type="checkbox" /> Accept Terms and Conditions <br />
-    <button type="submit">Sign Up</button>
+    <button type="submit">Sign Up</button><br>
     Already Registered? <a href="login.html">Login</a>
     </form>
     </pre>
   </body>
+  <script>
+  function validatePhone() {
+      const phoneInput = document.getElementById("phone");
+      const phoneNumber = phoneInput.value;
+      const phonePattern = /^[6-9]{1}[0-9]{9}$/;
+
+      // if (!phonePattern.test(phoneNumber)) {
+      //   alert("Invalid phone number. Please enter a valid 10-digit phone number starting with 6-9.");
+      //   phoneInput.focus();
+      //   return false;
+      // }
+      
+      if (phonePattern.test(phoneNumber)) {
+        phoneInput.style.borderColor = "green";
+      } else {
+        phoneInput.style.borderColor = "red";
+      }
+    }
+
+    function validateFName() {
+      const nameInput = document.getElementById("fname");
+      const nameValue = nameInput.value;
+      const namePattern = /^[A-Z]{1}[a-z]{3-15}$/;
+
+      if (namePattern.test(nameValue)) {
+        nameInput.style.borderColor = "green";
+      } else {
+        nameInput.style.borderColor = "red";
+      }
+    }
+    // function validateLName() {
+    //   const nameInput = document.getElementById("lname");
+    //   const nameValue = nameInput.value;
+    //   const namePattern = /^[A-Z]{1}[a-z]{;
+
+    //   if (namePattern.test(nameValue)) {
+    //     nameInput.style.borderColor = "green";
+    //   } else {
+    //     nameInput.style.borderColor = "red";
+    //   }
+    // }
+  </script>
 </html>
